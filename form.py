@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 import sqlite3
 
 app = Flask(__name__)
-
-# create database + table (runs once safely)
 def init_db():
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
