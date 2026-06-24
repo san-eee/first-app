@@ -53,7 +53,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "My website is live on Render!"
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    return render_template("form.html")
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
