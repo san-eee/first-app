@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        width: 350px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    input:focus, select:focus {
+        border-color: #4facfe;
+    }
+
+    .error {
+        color: red;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 15px;
+        padding: 10px;
+        background: #4facfe;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1c8ef9;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Student Form</h2>
+
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter your name">
+    <div class="error" id="nameError"></div>
+
+    <label>Roll Number</label>
+    <input type="text" id="roll" placeholder="Enter roll number">
+    <div class="error" id="rollError"></div>
+
+    <label>Department</label>
+    <input type="text" id="dept" placeholder="Enter department">
+    <div class="error" id="deptError"></div>
+
+    <label>Year</label>
+    <select id="year">
+        <option value="">Select year</option>
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+    </select>
+    <div class="error" id="yearError"></div>
+
+    <button onclick="validateForm()">Submit</button>
+</div>
+
+<script>
+function validateForm() {
+    let isValid = true;
+
+    // Clear previous errors
+    document.getElementById("nameError").innerText = "";
+    document.getElementById("rollError").innerText = "";
+    document.getElementById("deptError").innerText = "";
+    document.getElementById("yearError").innerText = "";
+
+    let name = document.getElementById("name").value.trim();
+    let roll = document.getElementById("roll").value.trim();
+    let dept = document.getElementById("dept").value.trim();
+    let year = document.getElementById("year").value;
+
+    // Name validation (only letters and spaces)
+    if (name === "" || !/^[A-Za-z\s]+$/.test(name)) {
+        document.getElementById("nameError").innerText = "Enter a valid name";
+        isValid = false;
+    }
+
+    // Roll number validation (alphanumeric)
+    if (roll === "" || !/^[A-Za-z0-9]+$/.test(roll)) {
+        document.getElementById("rollError").innerText = "Enter valid roll number";
+        isValid = false;
+    }
+
+    // Department validation
+    if (dept === "") {
+        document.getElementById("deptError").innerText = "Department is required";
+        isValid = false;
+    }
+
+    // Year validation
+    if (year === "") {
+        document.getElementById("yearError").innerText = "Select year";
+        isValid = false;
+    }
+
+    // If valid, show data
+    if (isValid) {
+        fetch("http://127.0.0.1:5000/submit", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        roll: roll,
+        dept: dept,
+        year: year
+    })
+})
+.then(res => res.json())
+.then(data => {
+    alert("Data stored successfully");
+});
+        let data = {
+            name: name,
+            roll: roll,
+            dept: dept,
+            year: year
+        };
+
+        console.log("Form Data:", data);
+        alert("Form submitted successfully!");
+    }
+}
+</script>
+
+</body>
+</html>
